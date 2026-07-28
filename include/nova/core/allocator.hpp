@@ -10,5 +10,7 @@ namespace nova {
 			virtual MemoryBlock allocate(std::size_t bytes,std::size_t alignment = 64) = 0;
 			
 			virtual void deallocate(const MemoryBlock &block) = 0;
+			
+			virtual const char* name() const = 0;
 	};
 }

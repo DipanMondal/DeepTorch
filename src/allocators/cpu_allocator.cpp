@@ -23,4 +23,8 @@ namespace nova {
 	{
 		std::free(block.ptr);
 	}
+	
+	const char* CPUAllocator::name() {
+		return "CPUAllocator";
+	}
 }

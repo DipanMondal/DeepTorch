@@ -7,5 +7,6 @@ namespace nova {
 		public:
 			MemoryBlock allocate(std::size_t bytes) override;
 			void deallocate(const MemoryBlock&block) override;
+			const char*name() override;
 	};
 }
