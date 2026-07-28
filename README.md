@@ -22,8 +22,26 @@
           │               │
       malloc()      cudaMalloc()
 ```
+### Responsibilities
+#### Allocator
+Responsible only for allocating and freeing memory.
+- allocate()
+- deallocate()
+Nothing else.
+It also handles the memory location (CPU or GPU).
+
+#### Storage
+Responsible for owning memory.
+Contains:
+- pointer
+- size
+- allocator
+
 ---
 ## Tensor Design
+#### Tensor
+Tensor owns the Storage and other metadata about the storage. It is an abstraction of the 
+underlying memory and doesn't need to concern about Raw Memory.
 ```
 Tensor
 │

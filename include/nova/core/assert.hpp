@@ -9,7 +9,7 @@ namespace nova {
 		std::cerr << "Assertion failed: " << expression
             << "\nFile: " << file
             << "\nLine: " << line
-            << std::endl;
+            << '\n';
 			
 		std::abort();
 	}
