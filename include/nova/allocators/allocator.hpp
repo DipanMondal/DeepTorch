@@ -11,6 +11,6 @@ namespace nova {
 			
 			virtual void deallocate(const MemoryBlock &block) = 0;
 			
-			virtual const char* name() const = 0;
+			virtual const char* name() const noexcept= 0;
 	};
 }

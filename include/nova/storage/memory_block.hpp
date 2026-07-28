@@ -5,7 +5,8 @@
 namespace nova {
 	struct MemoryBlock
 	{
-		void* ptr = nullptr;
+		void* data = nullptr;
 		std::size_t bytes = 0;
+		std::size_t alignment = 64;
 	};
 }
