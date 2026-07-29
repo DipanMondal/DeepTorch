@@ -59,5 +59,25 @@ namespace nova {
 	bool Shape::operator!=(const Shape& other) const noexcept {
 		return !(*this == other);
 	}
+	
+	Shape::const_iterator Shape::begin() const noexcept {
+		return dims_.begin();
+	}
+
+	Shape::const_iterator Shape::end() const noexcept {
+		return dims_.end();
+	}
+
+	Shape::value_type Shape::front() const {
+		return dims_.front();
+	}
+
+	Shape::value_type Shape::back() const {
+		return dims_.back();
+	}
+	
+	bool Shape::is_scalar() const noexcept {
+		return dims_.empty();
+	}
 }
 

@@ -151,3 +151,41 @@ TEST(ShapeTest, ValueTypeTraits)
     EXPECT_TRUE(std::is_move_constructible_v<Shape>);
     EXPECT_TRUE(std::is_move_assignable_v<Shape>);
 }
+
+TEST(ShapeTest, Iterator)
+{
+    Shape shape({2,3,4});
+
+    std::vector<std::size_t> values;
+
+    for(auto dim : shape)
+        values.push_back(dim);
+
+    ASSERT_EQ(values.size(), 3);
+
+    EXPECT_EQ(values[0], 2);
+    EXPECT_EQ(values[1], 3);
+    EXPECT_EQ(values[2], 4);
+}
+
+TEST(ShapeTest, Front)
+{
+    Shape shape({5,6,7});
+
+    EXPECT_EQ(shape.front(), 5);
+}
+
+TEST(ShapeTest, Back)
+{
+    Shape shape({5,6,7});
+
+    EXPECT_EQ(shape.back(), 7);
+}
+
+TEST(ShapeTest, isScaler){
+	Shape shape1;
+	Shape shape2({1});
+	
+	EXPECT_TRUE(shape1.is_scalar());
+	EXPECT_FALSE(shape2.is_scalar());
+}
