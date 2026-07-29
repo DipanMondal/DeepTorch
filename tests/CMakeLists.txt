@@ -4,7 +4,7 @@ add_executable(
 
     allocators/test_cpu_allocator.cpp
     allocators/test_allocator_registry.cpp
-
+	storage/test_storage.cpp
 )
 
 target_link_libraries(
