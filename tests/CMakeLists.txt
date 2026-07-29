@@ -5,6 +5,7 @@ add_executable(
     allocators/test_cpu_allocator.cpp
     allocators/test_allocator_registry.cpp
 	storage/test_storage.cpp
+	tensor/test_shape.cpp
 )
 
 target_link_libraries(
