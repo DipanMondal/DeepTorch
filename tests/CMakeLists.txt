@@ -6,6 +6,8 @@ add_executable(
     allocators/test_allocator_registry.cpp
 	storage/test_storage.cpp
 	tensor/test_shape.cpp
+	tensor/test_strides.cpp
+	tensor/test_storage_offset.cpp
 )
 
 target_link_libraries(
