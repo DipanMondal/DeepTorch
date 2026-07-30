@@ -54,4 +54,25 @@ Tensor
                          │
                          ▼
                   Raw Memory
+				  
+class Tensor
+{
+private:
+	TensorMetadata metadata_;
+	shared_ptr<Storage> storage_;
+}
+```
+
+#### TensorMetadata
+```
+class TensorMetadata
+{
+private:
+    Shape shape_;
+    Strides strides_;
+    StorageOffset offset_;
+    Device device_;
+    DType dtype_;
+    Layout layout_;
+};
 ```
