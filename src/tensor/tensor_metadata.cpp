@@ -4,10 +4,13 @@
 
 namespace nova {
 	// Constructors
-	TensorMetadata::TensorMetadata(Shape shape, Strides strides, StorageOffset offset)
+	TensorMetadata::TensorMetadata(Shape shape, Strides strides, StorageOffset offset, Device device, DType dtype, Layout layout)
 		: shape_(std::move(shape)),
 		  strides_(std::move(strides)),
-		  offset_(offset)
+		  offset_(offset),
+		  device_(device),
+		  dtype_(dtype),
+		  layout_(layout)
 	{
 		if (shape_.rank() != strides_.rank())
 		{
@@ -16,9 +19,8 @@ namespace nova {
 		}
 	}
 	
-	TensorMetadata TensorMetadata::contiguous(Shape shape, StorageOffset offset)
-	{
-		return TensorMetadata(std::move(shape), Strides::contiguous(shape),	offset);
+	TensorMetadata TensorMetadata::contiguous(Shape shape, StorageOffset offset, Device device, DType dtype, Layout layout) {
+		return TensorMetadata(std::move(shape), Strides::contiguous(shape),	offset, device, dtype, layout);
 	}
 	
 	
@@ -33,6 +35,18 @@ namespace nova {
 	
 	const StorageOffset& TensorMetadata::offset() const noexcept {
 		return offset_;
+	}
+	
+	const Device& TensorMetadata::device() const noexcept {
+		return device_;
+	}
+
+	const DType& TensorMetadata::dtype() const noexcept {
+		return dtype_;
+	}
+
+	const Layout& TensorMetadata::layout() const noexcept {
+		return layout_;
 	}
 	
 	std::size_t TensorMetadata::rank() const noexcept {

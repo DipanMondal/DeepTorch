@@ -195,3 +195,91 @@ TEST(TensorMetadataTest, MoveAssignment)
 
     EXPECT_TRUE(b.is_contiguous());
 }
+
+TEST(TensorMetadataTest, DefaultDevice)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({2,3}));
+
+    EXPECT_EQ(meta.device(), Device::cpu());
+}
+
+TEST(TensorMetadataTest, CustomDevice)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({2,3}),
+            StorageOffset(),
+            Device::cuda(1));
+
+    EXPECT_EQ(meta.device(), Device::cuda(1));
+}
+
+TEST(TensorMetadataTest, DefaultDType)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({2,3}));
+
+    EXPECT_EQ(meta.dtype(), DType::float32());
+}
+
+TEST(TensorMetadataTest, CustomDType)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({2,3}),
+            StorageOffset(),
+            Device::cpu(),
+            DType::int64());
+
+    EXPECT_EQ(meta.dtype(), DType::int64());
+}
+
+TEST(TensorMetadataTest, DefaultLayout)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({2,3}));
+
+    EXPECT_EQ(meta.layout(), Layout::strided());
+}
+
+TEST(TensorMetadataTest, CustomLayout)
+{
+    auto meta =
+        TensorMetadata(
+            Shape({2,3}),
+            Strides({3,1}),
+            StorageOffset(),
+            Device::cpu(),
+            DType::float64(),
+            Layout::strided());
+
+    EXPECT_EQ(meta.layout(), Layout::strided());
+}
+
+TEST(TensorMetadataTest, CombinedMetadata)
+{
+    auto meta =
+        TensorMetadata::contiguous(
+            Shape({4,5}),
+            StorageOffset(2),
+            Device::cuda(0),
+            DType::float64(),
+            Layout::strided());
+
+    EXPECT_EQ(meta.shape()[0], 4);
+    EXPECT_EQ(meta.shape()[1], 5);
+
+    EXPECT_EQ(meta.offset().value(), 2);
+
+    EXPECT_EQ(meta.device(), Device::cuda(0));
+
+    EXPECT_EQ(meta.dtype(), DType::float64());
+
+    EXPECT_EQ(meta.layout(), Layout::strided());
+
+    EXPECT_TRUE(meta.is_contiguous());
+}
