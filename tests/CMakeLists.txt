@@ -22,6 +22,7 @@ add_executable(
 	tensor/test_storage_offset.cpp
 	tensor/test_tensor_metadata.cpp
 	tensor/test_device.cpp
+	tensor/test_dtype.cpp
 )
 
 target_link_libraries(
