@@ -23,6 +23,7 @@ add_executable(
 	tensor/test_tensor_metadata.cpp
 	tensor/test_device.cpp
 	tensor/test_dtype.cpp
+	tensor/test_layout.cpp
 )
 
 target_link_libraries(
