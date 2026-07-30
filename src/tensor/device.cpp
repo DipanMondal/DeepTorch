@@ -15,7 +15,7 @@ namespace nova {
 		return "unknown";
 	}
 	
-	std::ostream& Device::operator<<(std::ostream& os, const Device& device) {
+	std::ostream& operator<<(std::ostream& os, const Device& device) {
 		return os << device.to_string();
 	}
 
