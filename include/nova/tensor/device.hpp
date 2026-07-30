@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <string>
+#include <ostream>
 
 namespace nova {
 	enum class DeviceType {
@@ -59,5 +60,6 @@ namespace nova {
 			}
 
 			friend constexpr bool operator==(const Device&, const Device&) noexcept = default;
+			friend std::ostream& operator<<(std::ostream& os, const Device& device);
 	};	
 }
