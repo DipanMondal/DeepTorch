@@ -20,6 +20,7 @@ add_executable(
 	tensor/test_shape.cpp
 	tensor/test_strides.cpp
 	tensor/test_storage_offset.cpp
+	tensor/test_tensor_metadata.cpp
 )
 
 target_link_libraries(
