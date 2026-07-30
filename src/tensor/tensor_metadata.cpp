@@ -64,4 +64,22 @@ namespace nova {
 	bool TensorMetadata::is_contiguous() const noexcept {
 		return strides_ == Strides::contiguous(shape_);
 	}
+	
+	std::size_t TensorMetadata::required_elements() const noexcept {
+		std::size_t max_index = 0;
+
+		const auto& strides = strides_.values();
+
+		for (std::size_t i = 0; i < shape_.rank(); ++i)
+		{
+			if (shape_[i] == 0)
+			{
+				return 0;
+			}
+
+			max_index += (shape_[i] - 1) * strides[i];
+		}
+
+		return offset_.value() + max_index + 1;
+	}
 }

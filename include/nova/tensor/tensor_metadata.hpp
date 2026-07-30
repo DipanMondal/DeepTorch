@@ -58,6 +58,9 @@ namespace nova {
 			[[nodiscard]]
 			bool is_contiguous() const noexcept;
 			
+			[[nodiscard]]
+			std::size_t required_elements() const noexcept;
+			
 			friend bool operator==(const TensorMetadata&, const TensorMetadata&) = default;
 	};
 }

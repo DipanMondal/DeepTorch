@@ -24,6 +24,7 @@ add_executable(
 	tensor/test_device.cpp
 	tensor/test_dtype.cpp
 	tensor/test_layout.cpp
+	tensor/test_tensor.cpp
 )
 
 target_link_libraries(

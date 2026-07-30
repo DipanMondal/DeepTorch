@@ -213,8 +213,24 @@ namespace nova {
 			std::string to_string() const {
 				return std::string(name());
 			}
+			
+			template<typename T>
+			[[nodiscard]]
+			static constexpr DType from() noexcept;
 
 			friend constexpr bool operator==(const DType&, const DType&) noexcept = default;
 	};
 
 } 
+
+#include "nova/core/scalar_type_traits.hpp"
+
+namespace nova
+{
+
+	template<typename T>
+	constexpr DType DType::from() noexcept {
+		return DType(ScalarTypeTraits<T>::scalar_type);
+	}
+
+}
