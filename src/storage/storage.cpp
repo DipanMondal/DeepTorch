@@ -34,12 +34,12 @@ namespace nova {
 	
 	
 	// getters
-	void* Storage::data() noexcept {
-		return block_.data;
+	std::byte* Storage::data() noexcept {
+		return static_cast<std::byte*>(block_.data);
 	}
 
-	const void* Storage::data() const noexcept{
-		return block_.data;
+	const std::byte* Storage::data() const noexcept{
+		return static_cast<const std::byte*>(block_.data);
 	}
 
 	std::size_t Storage::bytes() const noexcept{

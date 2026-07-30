@@ -29,7 +29,7 @@ TEST(StorageTest, ReadWriteMemory)
 
     nova::Storage storage(100 * sizeof(float), allocator);
 
-    float* ptr = static_cast<float*>(storage.data());
+    float* ptr = reinterpret_cast<float*>(storage.data());
 
     for(int i = 0; i < 100; ++i)
         ptr[i] = static_cast<float>(i);
@@ -147,7 +147,7 @@ TEST(StorageTest, MultiThreadedStorage)
             nova::Storage storage(1024, allocator);
 
             int* ptr =
-                static_cast<int*>(storage.data());
+                reinterpret_cast<int*>(storage.data());
 
             ptr[0] = 42;
 

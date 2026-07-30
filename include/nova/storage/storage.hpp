@@ -2,6 +2,7 @@
 
 #include "nova/allocators/allocator.hpp"
 #include "nova/storage/memory_block.hpp"
+#include <cstddef>
 
 
 namespace nova {
@@ -21,12 +22,16 @@ namespace nova {
 			Storage& operator=(Storage&&) noexcept;
 			
 			// getter
-			void* data() noexcept;
-			
-			const void* data() const noexcept;
+			[[nodiscard]]
+			std::byte* data() noexcept;
 
+			[[nodiscard]]
+			const std::byte* data() const noexcept;
+
+			[[nodiscard]]
 			std::size_t bytes() const noexcept;
 
+			[[nodiscard]]
 			bool empty() const noexcept;
 
 			
