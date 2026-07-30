@@ -21,6 +21,7 @@ add_executable(
 	tensor/test_strides.cpp
 	tensor/test_storage_offset.cpp
 	tensor/test_tensor_metadata.cpp
+	tensor/test_device.cpp
 )
 
 target_link_libraries(
