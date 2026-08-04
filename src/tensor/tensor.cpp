@@ -25,21 +25,21 @@ namespace nova
 					"Unsupported device.");
 		}
 
-		
 		// Allocate storage
-		
-
 		const std::size_t bytes = shape.numel() * dtype.size();
 
 		std::shared_ptr<Storage> storage = std::make_shared<Storage>(bytes,*allocator);		
 		
 		return storage;
 	}
+	
+	// priave helper function for friend functions of tensor
+	const std::shared_ptr<Storage>& Tensor::storage() const noexcept {
+		return storage_;
+	}
 
 	
 	// Constructors
-	
-
 	Tensor::Tensor() noexcept
 		: storage_(std::make_shared<Storage>()),
 		  metadata_()
@@ -78,7 +78,6 @@ namespace nova
 	{}
 
 	// Metadata
-
 	const Shape& Tensor::shape() const noexcept {
 		return metadata_.shape();
 	}
@@ -105,8 +104,6 @@ namespace nova
 
 	
 	// Information
-	
-
 	std::size_t	Tensor::rank() const noexcept {
 		return metadata_.rank();
 	}

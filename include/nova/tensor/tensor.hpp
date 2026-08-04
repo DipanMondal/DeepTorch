@@ -16,6 +16,10 @@ namespace nova {
 				const DType& dtype,
 				const Device& device);
 			
+			// priave helper function for friend functions of tensor
+			[[nodiscard]]
+			const std::shared_ptr<Storage>& storage() const noexcept;
+			
 		public:
 			// Constructors
 			Tensor() noexcept;
