@@ -33,12 +33,6 @@ namespace nova
 		return storage;
 	}
 	
-	// priave helper function for friend functions of tensor
-	const std::shared_ptr<Storage>& Tensor::storage() const noexcept {
-		return storage_;
-	}
-
-	
 	// Constructors
 	Tensor::Tensor() noexcept
 		: storage_(std::make_shared<Storage>()),
@@ -147,6 +141,26 @@ namespace nova
 		return Tensor(
 			std::move(storage),
 			std::move(metadata));
+	}
+	
+	
+	Tensor Tensor::reshape(const Shape& new_shape) const {
+		if (!is_contiguous()) {
+			throw std::logic_error("Cannot reshape non-contiguous tensor.");
+		}
+		
+		if(numel() != new_shape.numel()) {
+			throw std::invalid_argument("New shape is not compatible with the original tensor.");
+		}
+		
+		TensorMetadata new_metadata = 
+			TensorMetadata::contiguous(new_shape,
+					offset(),
+					device(),
+					dtype(),
+					layout());
+		
+		return Tensor(storage_, std::move(new_metadata));
 	}
 
 }

@@ -6,6 +6,8 @@
 #include <cstddef>
 #include <memory>
 
+#include "nova/tensor/shape.hpp"
+
 namespace nova {
 	class Tensor final {
 		private:
@@ -15,10 +17,6 @@ namespace nova {
 			static std::shared_ptr<Storage>	allocate_storage( const Shape& shape,
 				const DType& dtype,
 				const Device& device);
-			
-			// priave helper function for friend functions of tensor
-			[[nodiscard]]
-			const std::shared_ptr<Storage>& storage() const noexcept;
 			
 		public:
 			// Constructors
@@ -89,6 +87,15 @@ namespace nova {
 				DType dtype = DType::float32(),
 				Device device = Device::cpu(),
 				Layout layout = Layout::strided());
+				
+			
+			/*
+				View Schemas
+			*/
+			
+			// Reshape
+			[[nodiscard]]
+			Tensor reshape(const Shape& new_shape) const;
 	};
 }
 
