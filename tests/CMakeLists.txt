@@ -25,6 +25,7 @@ add_executable(
 	tensor/test_dtype.cpp
 	tensor/test_layout.cpp
 	tensor/test_tensor.cpp
+	tensor/test_indexing.cpp
 )
 
 add_executable(
