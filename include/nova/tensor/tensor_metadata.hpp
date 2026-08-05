@@ -62,5 +62,8 @@ namespace nova {
 			std::size_t required_elements() const noexcept;
 			
 			friend bool operator==(const TensorMetadata&, const TensorMetadata&) = default;
+			
+			[[nodiscard]]
+			TensorMetadata transpose(std::size_t dim0, std::size_t dim1) const;
 	};
 }

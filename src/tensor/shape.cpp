@@ -1,6 +1,7 @@
 #include "nova/tensor/shape.hpp"
 #include <numeric>
 #include <string>
+#include <utility>
 
 namespace nova {
 	std::size_t Shape::compute_numel_(const std::vector<std::size_t>&dims){
@@ -128,6 +129,27 @@ namespace nova {
 		}
 		
 		return Shape(dims);
+	}
+	
+	void Shape::validate_dimension(std::size_t dim) const {
+		if(dim >= rank()) {
+			throw std::out_of_range(
+				"dim (" + std::to_string(dim) +
+				") is out of range for rank " +
+				std::to_string(rank()) + '.'
+			);
+		}
+	}
+	
+	Shape Shape::transpose(std::size_t dim0, std::size_t dim1) const {
+		// validation
+		validate_dimension(dim0);
+		validate_dimension(dim1);
+		
+		auto dims = dims_;
+		std::swap(dims[dim0], dims[dim1]);
+		
+		return Shape(std::move(dims));
 	}
 }
 

@@ -14,6 +14,7 @@ namespace nova {
 			std::size_t numel_=0;
 			
 			std::size_t compute_numel_(const std::vector<std::size_t>&dims);
+			void validate_dimension(std::size_t dim) const;
 		public:
 			using value_type = std::size_t;
 			using container_type = std::vector<value_type>;
@@ -59,5 +60,8 @@ namespace nova {
 				std::size_t start_dim = 0, 
 				std::size_t end_dim = std::numeric_limits<std::size_t>::max()
 			) const;
+			
+			[[nodiscard]]
+			Shape transpose(std::size_t dim0, std::size_t dim1) const;
 	};
 }

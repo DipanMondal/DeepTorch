@@ -207,3 +207,42 @@ TEST(StridesTest, MoveAssignment)
     EXPECT_EQ(b[1],4);
     EXPECT_EQ(b[2],1);
 }
+
+TEST(StridesTest, TransposeBasic)
+{
+    Strides strides({12,4,1});
+
+    Strides transposed =
+        strides.transpose(0,2);
+
+    EXPECT_EQ(transposed[0],1);
+    EXPECT_EQ(transposed[1],4);
+    EXPECT_EQ(transposed[2],12);
+}
+
+TEST(StridesTest, TransposeSameDimension)
+{
+    Strides strides({12,4,1});
+
+    EXPECT_EQ(
+        strides.transpose(1,1),
+        strides);
+}
+
+TEST(StridesTest, TransposeReverseOrder)
+{
+    Strides strides({12,4,1});
+
+    EXPECT_EQ(
+        strides.transpose(0,2),
+        strides.transpose(2,0));
+}
+
+TEST(StridesTest, TransposeInvalidDimension)
+{
+    Strides strides({12,4,1});
+
+    EXPECT_THROW(
+        strides.transpose(0,5),
+        std::out_of_range);
+}

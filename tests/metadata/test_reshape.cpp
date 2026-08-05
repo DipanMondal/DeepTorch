@@ -5,7 +5,7 @@
 
 using namespace nova;
 
-TEST(ViewTest, ReshapeChangesShape)
+TEST(TensorReshapeTest, ReshapeChangesShape)
 {
     Tensor a(
         Shape({2, 3}),
@@ -23,7 +23,7 @@ TEST(ViewTest, ReshapeChangesShape)
     EXPECT_EQ(a.shape()[1], 3);
 }
 
-TEST(ViewTest, ReshapeSharesStorage)
+TEST(TensorReshapeTest, ReshapeSharesStorage)
 {
     Tensor a(
         Shape({2, 3}),
@@ -46,7 +46,7 @@ TEST(ViewTest, ReshapeSharesStorage)
             pb[i]);
 }
 
-TEST(ViewTest, ReshapeWriteReflectsOriginal)
+TEST(TensorReshapeTest, ReshapeWriteReflectsOriginal)
 {
     Tensor a(
         Shape({2, 3}),
@@ -63,7 +63,7 @@ TEST(ViewTest, ReshapeWriteReflectsOriginal)
         42.0f);
 }
 
-TEST(ViewTest, ReshapeDifferentNumelThrows)
+TEST(TensorReshapeTest, ReshapeDifferentNumelThrows)
 {
     Tensor a(
         Shape({2, 3}),
@@ -75,7 +75,7 @@ TEST(ViewTest, ReshapeDifferentNumelThrows)
         std::invalid_argument);
 }
 
-TEST(ViewTest, ReshapeCreatesNewMetadata)
+TEST(TensorReshapeTest, ReshapeCreatesNewMetadata)
 {
     Tensor a(
         Shape({2, 3}),

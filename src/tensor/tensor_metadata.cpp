@@ -82,4 +82,17 @@ namespace nova {
 
 		return offset_.value() + max_index + 1;
 	}
+	
+	TensorMetadata TensorMetadata::transpose(
+		std::size_t dim0,
+		std::size_t dim1) const
+	{
+		return TensorMetadata(
+			shape_.transpose(dim0,dim1),
+			strides_.transpose(dim0,dim1),
+			offset_,
+			device_,
+			dtype_,
+			layout_);
+	}
 }

@@ -108,6 +108,10 @@ namespace nova {
 				std::size_t end_dim = std::numeric_limits<std::size_t>::max()
 			) const;
 			
+			// Transpose
+			[[nodiscard]]
+			Tensor transpose(std::size_t dim0, std::size_t dim1) const;
+			
 			// Inplace Operation
 			void reshape_(const Shape& new_shape);
 	};

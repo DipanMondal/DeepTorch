@@ -1,4 +1,6 @@
 #include "nova/tensor/strides.hpp"
+#include <string>
+#include <utility>
 
 namespace nova {
 	Strides::Strides(std::initializer_list<value_type> strides) : strides_(strides) {}
@@ -61,5 +63,26 @@ namespace nova {
 	bool Strides::operator!=(const Strides& other) const noexcept {
 		return !(*this == other);
 	}	
+	
+	void Strides::validate_dimension(std::size_t dim) const {
+		if(dim >= rank()) {
+			throw std::out_of_range(
+				"dim (" + std::to_string(dim) +
+				") is out of range for rank " +
+				std::to_string(rank()) + '.'
+			);
+		}
+	}
+	
+	Strides Strides::transpose(std::size_t dim0, std::size_t dim1) const {
+		// validation
+		validate_dimension(dim0);
+		validate_dimension(dim1);
+		
+		auto dims = strides_;
+		std::swap(dims[dim0], dims[dim1]);
+		
+		return Strides(std::move(dims));
+	}
 
 }

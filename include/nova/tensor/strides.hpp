@@ -10,7 +10,7 @@ namespace nova {
 	class Strides final {
 		private:
 			std::vector<std::size_t> strides_;
-			
+			void validate_dimension(std::size_t dim) const;
 		public:
 			using value_type = std::size_t;
 			using container_type = std::vector<value_type>;
@@ -59,5 +59,9 @@ namespace nova {
 
 			[[nodiscard]]
 			bool operator!=(const Strides& other) const noexcept;
+			
+			// view operations
+			[[nodiscard]]
+			Strides transpose(std::size_t dim0, std::size_t dim1) const;
 	};
 }

@@ -189,3 +189,169 @@ TEST(ShapeTest, isScaler){
 	EXPECT_TRUE(shape1.is_scalar());
 	EXPECT_FALSE(shape2.is_scalar());
 }
+
+TEST(ShapeTest, FlattenAll)
+{
+    Shape shape({2, 3, 4});
+
+    Shape flat = shape.flatten();
+
+    EXPECT_EQ(flat.rank(), 1);
+    EXPECT_EQ(flat[0], 24);
+}
+
+TEST(ShapeTest, FlattenMiddleDimensions)
+{
+    Shape shape({2, 3, 4, 5});
+
+    Shape flat = shape.flatten(1, 2);
+
+    EXPECT_EQ(flat.rank(), 3);
+
+    EXPECT_EQ(flat[0], 2);
+    EXPECT_EQ(flat[1], 12);
+    EXPECT_EQ(flat[2], 5);
+}
+
+TEST(ShapeTest, FlattenLastDimensions)
+{
+    Shape shape({2, 3, 4, 5});
+
+    Shape flat = shape.flatten(2, 3);
+
+    ASSERT_EQ(flat.rank(), 3);
+
+    EXPECT_EQ(flat[0], 2);
+    EXPECT_EQ(flat[1], 3);
+    EXPECT_EQ(flat[2], 20);
+}
+
+TEST(ShapeTest, FlattenSingleDimension)
+{
+    Shape shape({2,3,4});
+
+    Shape flat = shape.flatten(1,1);
+
+    EXPECT_EQ(flat, shape);
+}
+
+TEST(ShapeTest, FlattenVector)
+{
+    Shape shape({10});
+
+    Shape flat = shape.flatten();
+
+    EXPECT_EQ(flat.rank(),1);
+    EXPECT_EQ(flat[0],10);
+}
+
+TEST(ShapeTest, FlattenScalar)
+{
+    Shape shape({});
+
+    Shape flat = shape.flatten();
+
+    EXPECT_EQ(flat.rank(), 1);
+    EXPECT_EQ(flat[0], 1);
+    EXPECT_EQ(flat.numel(), 1);
+}
+
+TEST(ShapeTest, FlattenInvalidRange)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.flatten(2,1),
+        std::invalid_argument);
+}
+
+TEST(ShapeTest, FlattenOutOfBounds)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.flatten(5,5),
+        std::out_of_range);
+}
+
+TEST(ShapeTest, FlattenPreservesNumel)
+{
+    Shape shape({2,3,4,5});
+
+    Shape flat = shape.flatten(1,2);
+
+    EXPECT_EQ(
+        shape.numel(),
+        flat.numel());
+}
+
+TEST(ShapeTest, TransposeBasic)
+{
+    Shape shape({2, 3, 4});
+
+    Shape transposed = shape.transpose(0, 2);
+
+    EXPECT_EQ(transposed.rank(), 3);
+
+    EXPECT_EQ(transposed[0], 4);
+    EXPECT_EQ(transposed[1], 3);
+    EXPECT_EQ(transposed[2], 2);
+}
+
+TEST(ShapeTest, TransposeAdjacentDimensions)
+{
+    Shape shape({2, 3, 4, 5});
+
+    Shape transposed = shape.transpose(1, 2);
+
+    EXPECT_EQ(transposed.rank(), 4);
+
+    EXPECT_EQ(transposed[0], 2);
+    EXPECT_EQ(transposed[1], 4);
+    EXPECT_EQ(transposed[2], 3);
+    EXPECT_EQ(transposed[3], 5);
+}
+
+TEST(ShapeTest, TransposeSameDimension)
+{
+    Shape shape({2, 3, 4});
+
+    Shape transposed = shape.transpose(1, 1);
+
+    EXPECT_EQ(transposed, shape);
+}
+
+TEST(ShapeTest, TransposeReverseOrder)
+{
+    Shape shape({2,3,4});
+
+    Shape a = shape.transpose(0,2);
+    Shape b = shape.transpose(2,0);
+
+    EXPECT_EQ(a,b);
+}
+
+TEST(ShapeTest, TransposeInvalidDimension)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.transpose(0,3),
+        std::out_of_range);
+
+    EXPECT_THROW(
+        shape.transpose(5,1),
+        std::out_of_range);
+}
+
+TEST(ShapeTest, TransposePreservesNumel)
+{
+    Shape shape({2,3,4,5});
+
+    Shape transposed =
+        shape.transpose(1,3);
+
+    EXPECT_EQ(
+        shape.numel(),
+        transposed.numel());
+}

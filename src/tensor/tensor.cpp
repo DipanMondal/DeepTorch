@@ -169,6 +169,18 @@ namespace nova
 		return reshape(shape().flatten(start_dim,end_dim));
 	}
 	
+	// Transpose
+	Tensor Tensor::transpose(
+		std::size_t dim0,
+		std::size_t dim1) const
+	{
+		return Tensor(
+			storage_,
+			metadata_.transpose(
+				dim0,
+				dim1));
+	}
+	
 	
 	// Inplace Operation
 	void Tensor::reshape_(const Shape& new_shape) {

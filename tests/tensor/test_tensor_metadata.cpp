@@ -283,3 +283,37 @@ TEST(TensorMetadataTest, CombinedMetadata)
 
     EXPECT_TRUE(meta.is_contiguous());
 }
+
+TEST(TensorMetadataTest, Transpose)
+{
+    TensorMetadata metadata =
+        TensorMetadata::contiguous(
+            Shape({2,3,4}));
+
+    TensorMetadata transposed =
+        metadata.transpose(0,2);
+
+    EXPECT_EQ(
+        transposed.shape(),
+        Shape({4,3,2}));
+
+    EXPECT_EQ(
+        transposed.strides(),
+        Strides({1,4,12}));
+
+    EXPECT_EQ(
+        transposed.offset(),
+        metadata.offset());
+
+    EXPECT_EQ(
+        transposed.device(),
+        metadata.device());
+
+    EXPECT_EQ(
+        transposed.dtype(),
+        metadata.dtype());
+
+    EXPECT_EQ(
+        transposed.layout(),
+        metadata.layout());
+}

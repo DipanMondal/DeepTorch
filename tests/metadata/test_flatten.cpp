@@ -5,102 +5,7 @@
 
 using namespace nova;
 
-TEST(ShapeTest, FlattenAll)
-{
-    Shape shape({2, 3, 4});
-
-    Shape flat = shape.flatten();
-
-    EXPECT_EQ(flat.rank(), 1);
-    EXPECT_EQ(flat[0], 24);
-}
-
-TEST(ShapeTest, FlattenMiddleDimensions)
-{
-    Shape shape({2, 3, 4, 5});
-
-    Shape flat = shape.flatten(1, 2);
-
-    EXPECT_EQ(flat.rank(), 3);
-
-    EXPECT_EQ(flat[0], 2);
-    EXPECT_EQ(flat[1], 12);
-    EXPECT_EQ(flat[2], 5);
-}
-
-TEST(ShapeTest, FlattenLastDimensions)
-{
-    Shape shape({2, 3, 4, 5});
-
-    Shape flat = shape.flatten(2, 3);
-
-    ASSERT_EQ(flat.rank(), 3);
-
-    EXPECT_EQ(flat[0], 2);
-    EXPECT_EQ(flat[1], 3);
-    EXPECT_EQ(flat[2], 20);
-}
-
-TEST(ShapeTest, FlattenSingleDimension)
-{
-    Shape shape({2,3,4});
-
-    Shape flat = shape.flatten(1,1);
-
-    EXPECT_EQ(flat, shape);
-}
-
-TEST(ShapeTest, FlattenVector)
-{
-    Shape shape({10});
-
-    Shape flat = shape.flatten();
-
-    EXPECT_EQ(flat.rank(),1);
-    EXPECT_EQ(flat[0],10);
-}
-
-TEST(ShapeTest, FlattenScalar)
-{
-    Shape shape({});
-
-    Shape flat = shape.flatten();
-
-    EXPECT_EQ(flat.rank(), 1);
-    EXPECT_EQ(flat[0], 1);
-    EXPECT_EQ(flat.numel(), 1);
-}
-
-TEST(ShapeTest, FlattenInvalidRange)
-{
-    Shape shape({2,3,4});
-
-    EXPECT_THROW(
-        shape.flatten(2,1),
-        std::invalid_argument);
-}
-
-TEST(ShapeTest, FlattenOutOfBounds)
-{
-    Shape shape({2,3,4});
-
-    EXPECT_THROW(
-        shape.flatten(5,5),
-        std::out_of_range);
-}
-
-TEST(ShapeTest, FlattenPreservesNumel)
-{
-    Shape shape({2,3,4,5});
-
-    Shape flat = shape.flatten(1,2);
-
-    EXPECT_EQ(
-        shape.numel(),
-        flat.numel());
-}
-
-TEST(TensorTest, FlattenChangesShape)
+TEST(TensorFlattenTest, FlattenChangesShape)
 {
     Tensor a(
         Shape({2,3,4}),
@@ -115,7 +20,7 @@ TEST(TensorTest, FlattenChangesShape)
 }
 
 
-TEST(TensorTest, FlattenSharesStorage)
+TEST(TensorFlattenTest, FlattenSharesStorage)
 {
     Tensor a(
         Shape({2,3}),
@@ -134,7 +39,7 @@ TEST(TensorTest, FlattenSharesStorage)
         EXPECT_FLOAT_EQ(pa[i],pb[i]);
 }
 
-TEST(TensorTest, FlattenWriteReflectsOriginal)
+TEST(TensorFlattenTest, FlattenWriteReflectsOriginal)
 {
     Tensor a(
         Shape({2,3}),
@@ -149,7 +54,7 @@ TEST(TensorTest, FlattenWriteReflectsOriginal)
         100.f);
 }
 
-TEST(TensorTest, FlattenPreservesMetadata)
+TEST(TensorFlattenTest, FlattenPreservesMetadata)
 {
     Tensor a(
         Shape({2,3}),
@@ -166,7 +71,7 @@ TEST(TensorTest, FlattenPreservesMetadata)
     EXPECT_EQ(a.offset(),b.offset());
 }
 
-TEST(TensorTest, FlattenDoesNotModifyOriginal)
+TEST(TensorFlattenTest, FlattenDoesNotModifyOriginal)
 {
     Tensor a(
         Shape({2,3,4}),
@@ -184,7 +89,7 @@ TEST(TensorTest, FlattenDoesNotModifyOriginal)
     EXPECT_EQ(b.shape()[0],24);
 }
 
-TEST(TensorTest, FlattenIsView)
+TEST(TensorFlattenTest, FlattenIsView)
 {
     Tensor original(
         Shape({2,3,4}),
