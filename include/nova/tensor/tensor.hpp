@@ -96,6 +96,9 @@ namespace nova {
 			// Reshape
 			[[nodiscard]]
 			Tensor reshape(const Shape& new_shape) const;
+			
+			// Inplace Operation
+			void reshape_(const Shape& new_shape);
 	};
 }
 

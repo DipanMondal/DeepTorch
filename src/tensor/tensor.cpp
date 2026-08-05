@@ -162,5 +162,28 @@ namespace nova
 		
 		return Tensor(storage_, std::move(new_metadata));
 	}
+	
+	
+	// Inplace Operation
+	void Tensor::reshape_(const Shape& new_shape) {
+		if (!is_contiguous())
+		{
+			throw std::logic_error(
+				"Cannot reshape a non-contiguous tensor.");
+		}
+
+		if (numel() != new_shape.numel())
+		{
+			throw std::invalid_argument(
+				"The new shape has a different number of elements.");
+		}
+
+		metadata_ = TensorMetadata::contiguous(
+			new_shape,
+			offset(),
+			device(),
+			dtype(),
+			layout());
+	}
 
 }
