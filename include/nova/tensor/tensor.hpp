@@ -4,6 +4,7 @@
 #include "nova/storage/storage.hpp"
 #include "nova/tensor/dtype.hpp"
 #include "nova/tensor/shape.hpp"
+#include "nova/tensor/detail/indexing.hpp"
 
 #include <cstddef>
 #include <memory>
@@ -114,7 +115,22 @@ namespace nova {
 			
 			// Inplace Operation
 			void reshape_(const Shape& new_shape);
+			
+			
+			/*------------------------
+				Indexing Operation
+			------------------------
+			*/
+			
+			template<typename T>
+			[[nodiscard]]
+			T& at(std::initializer_list<std::size_t> indices);
+			
+			template<typename T>
+			[[nodiscard]]
+			const T& at(std::initializer_list<std::size_t> indices) const;
 	};
 }
 
 #include "nova/tensor/detail/tensor_data.inl"
+#include "nova/tensor/detail/tensor_at.inl"

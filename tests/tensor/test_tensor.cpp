@@ -186,3 +186,213 @@ TEST(TensorTest, StorageTooSmallThrows)
         Tensor(storage, metadata),
         std::invalid_argument);
 }
+
+TEST(TensorTest, AtRead)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    auto* ptr = tensor.data<float>();
+
+    for (int i = 0; i < 6; ++i)
+        ptr[i] = static_cast<float>(i);
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({1,2}),
+        5.0f);
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({0,1}),
+        1.0f);
+}
+
+TEST(TensorTest, AtWrite)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    tensor.at<float>({1,2}) = 42.5f;
+
+    EXPECT_FLOAT_EQ(
+        tensor.data<float>()[5],
+        42.5f);
+}
+
+TEST(TensorTest, AtModify)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    tensor.at<float>({0,1}) = 10.f;
+
+    tensor.at<float>({0,1}) += 5.f;
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({0,1}),
+        15.f);
+}
+
+TEST(TensorTest, AtConst)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    tensor.at<float>({1,1}) = 99.f;
+
+    const Tensor& ct = tensor;
+
+    EXPECT_FLOAT_EQ(
+        ct.at<float>({1,1}),
+        99.f);
+}
+
+TEST(TensorTest, AtWrongDTypeThrows)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    EXPECT_THROW(
+        tensor.at<int>({0,0}),
+        std::runtime_error);
+}
+
+TEST(TensorTest, AtWrongRankThrows)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    EXPECT_THROW(
+        tensor.at<float>({1}),
+        std::invalid_argument);
+}
+
+TEST(TensorTest, AtOutOfBoundsThrows)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    EXPECT_THROW(
+        tensor.at<float>({2,1}),
+        std::out_of_range);
+
+    EXPECT_THROW(
+        tensor.at<float>({1,3}),
+        std::out_of_range);
+}
+
+TEST(TensorTest, AtScalar)
+{
+    Tensor tensor(
+        Shape({}),
+        DType::float32());
+
+    tensor.at<float>({}) = 3.14f;
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({}),
+        3.14f);
+}
+
+TEST(TensorTest, AtEmptyTensorThrows)
+{
+    Tensor tensor(
+        Shape({0}),
+        DType::float32());
+
+    EXPECT_THROW(
+        tensor.at<float>({0}),
+        std::out_of_range);
+}
+
+TEST(TensorTest, AtSharedStorage)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor b = a;
+
+    a.at<float>({1,2}) = 100.f;
+
+    EXPECT_FLOAT_EQ(
+        b.at<float>({1,2}),
+        100.f);
+}
+
+TEST(TensorTest, AtTransposedTensor)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    auto* ptr = tensor.data<float>();
+
+    for (int i = 0; i < 6; ++i)
+        ptr[i] = static_cast<float>(i);
+
+    Tensor transposed =
+        tensor.transpose(0,1);
+
+    EXPECT_FLOAT_EQ(
+        transposed.at<float>({2,1}),
+        5.f);
+
+    EXPECT_FLOAT_EQ(
+        transposed.at<float>({0,1}),
+        3.f);
+	
+	for(std::size_t i=0;i<2;i++){
+		for(std::size_t j=0;j<3;j++)
+			EXPECT_FLOAT_EQ(
+				transposed.at<float>({j,i}),
+				tensor.at<float>({i,j}));
+	}
+}
+
+
+TEST(TensorTest, AtWriteThroughTranspose)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor transposed =
+        tensor.transpose(0,1);
+
+    transposed.at<float>({2,1}) = 123.f;
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({1,2}),
+        123.f);
+}
+
+TEST(TensorTest, AtAfterReshape)
+{
+    Tensor tensor(
+        Shape({2,3}),
+        DType::float32());
+
+    auto* ptr = tensor.data<float>();
+    for (int i = 0; i < 6; ++i)
+        ptr[i] = static_cast<float>(i);
+
+    Tensor reshaped = tensor.reshape(Shape({3,2}));
+
+    EXPECT_FLOAT_EQ(
+        reshaped.at<float>({2,1}),
+        5.f);
+
+    reshaped.at<float>({1,0}) = 42.f;
+
+    EXPECT_FLOAT_EQ(
+        tensor.at<float>({0,2}),
+        42.f);
+}
+

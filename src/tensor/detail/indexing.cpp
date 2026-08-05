@@ -61,5 +61,26 @@ namespace nova::detail {
 				indices.begin(),
 				indices.size()));
 	}
-
+	
+	std::size_t compute_linear_index(
+		const TensorMetadata& metadata,
+		std::initializer_list<std::size_t> indices) 
+	{
+		return compute_linear_index(
+			metadata.shape(),
+			metadata.strides(),
+			metadata.offset(),
+			indices);
+	}
+	
+	std::size_t compute_linear_index(
+		const TensorMetadata& metadata,
+		std::span<const std::size_t> indices)
+	{
+		return compute_linear_index(
+			metadata.shape(),
+			metadata.strides(),
+			metadata.offset(),
+			indices);
+	}
 }
