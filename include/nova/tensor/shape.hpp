@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstddef>
 #include <initializer_list>
+#include <cstddef>
+#include <limits>
 
 namespace nova {
 	class Shape final{
@@ -51,5 +53,11 @@ namespace nova {
 			
 			[[nodiscard]]
 			bool is_scalar() const noexcept;
+			
+			[[nodiscard]]
+			Shape flatten(
+				std::size_t start_dim = 0, 
+				std::size_t end_dim = std::numeric_limits<std::size_t>::max()
+			) const;
 	};
 }

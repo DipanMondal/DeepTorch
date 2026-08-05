@@ -14,5 +14,11 @@ namespace nova {
 			
 			// getter function
 			std::size_t value() const noexcept;
+			
+			[[nodiscard]]
+			bool operator==(const StorageOffset&) const noexcept = default;
+
+			[[nodiscard]]
+			bool operator!=(const StorageOffset&) const noexcept = default;
 	};
 }

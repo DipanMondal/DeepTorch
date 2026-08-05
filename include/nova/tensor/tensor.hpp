@@ -3,10 +3,14 @@
 #include "nova/tensor/tensor_metadata.hpp"
 #include "nova/storage/storage.hpp"
 #include "nova/tensor/dtype.hpp"
+#include "nova/tensor/shape.hpp"
+
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
+#include <limits>
 
-#include "nova/tensor/shape.hpp"
+
 
 namespace nova {
 	class Tensor final {
@@ -96,6 +100,13 @@ namespace nova {
 			// Reshape
 			[[nodiscard]]
 			Tensor reshape(const Shape& new_shape) const;
+			
+			// Flatten
+			[[nodiscard]]
+			Tensor flatten(
+				std::size_t start_dim = 0, 
+				std::size_t end_dim = std::numeric_limits<std::size_t>::max()
+			) const;
 			
 			// Inplace Operation
 			void reshape_(const Shape& new_shape);

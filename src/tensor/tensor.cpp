@@ -1,6 +1,6 @@
 #include "nova/tensor/tensor.hpp"
 
-#include <stdexcept>
+#include <string>
 
 #include "nova/allocators/allocator_registry.hpp"
 
@@ -143,7 +143,7 @@ namespace nova
 			std::move(metadata));
 	}
 	
-	
+	// Reshape
 	Tensor Tensor::reshape(const Shape& new_shape) const {
 		if (!is_contiguous()) {
 			throw std::logic_error("Cannot reshape non-contiguous tensor.");
@@ -161,6 +161,12 @@ namespace nova
 					layout());
 		
 		return Tensor(storage_, std::move(new_metadata));
+	}
+	
+	
+	// Flatten
+	Tensor Tensor::flatten( std::size_t start_dim, std::size_t end_dim) const {
+		return reshape(shape().flatten(start_dim,end_dim));
 	}
 	
 	

@@ -27,6 +27,13 @@ add_executable(
 	tensor/test_tensor.cpp
 )
 
+add_executable(
+	tensor_view_tests
+	
+	metadata/test_reshape.cpp
+	metadata/test_flatten.cpp
+)
+
 target_link_libraries(
 
     storage_tests
@@ -62,8 +69,22 @@ target_link_libraries(
     GTest::gtest_main
 
 )
+
+target_link_libraries(
+
+    tensor_view_tests
+
+    PRIVATE
+
+    nova
+    GTest::gtest
+    GTest::gtest_main
+
+)
+
 include(GoogleTest)
 
 gtest_discover_tests(allocator_tests)
 gtest_discover_tests(storage_tests)
 gtest_discover_tests(tensor_tests)
+gtest_discover_tests(tensor_view_tests)
