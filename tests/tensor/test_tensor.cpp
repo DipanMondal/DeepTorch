@@ -396,3 +396,90 @@ TEST(TensorTest, AtAfterReshape)
         42.f);
 }
 
+TEST(TensorTest, CloneDifferentStorage)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor b = a.clone();
+
+    EXPECT_NE(
+        a.data<float>(),
+        b.data<float>());
+}
+
+TEST(TensorTest, CloneMetadata)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor b = a.clone();
+
+    EXPECT_EQ(a.shape(), b.shape());
+
+    EXPECT_EQ(a.strides(), b.strides());
+
+    EXPECT_EQ(a.dtype(), b.dtype());
+
+    EXPECT_EQ(a.device(), b.device());
+
+    EXPECT_EQ(a.offset(), b.offset());
+
+    EXPECT_EQ(a.layout(), b.layout());
+}
+
+TEST(TensorTest, CloneCopiesData)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    for(int i = 0; i < 6; ++i)
+        a.data<float>()[i] = static_cast<float>(i);
+
+    Tensor b = a.clone();
+
+    for(int i = 0; i < 6; ++i)
+        EXPECT_FLOAT_EQ(
+            a.data<float>()[i],
+            b.data<float>()[i]);
+}
+
+TEST(TensorTest, CloneIndependentStorage)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor b = a.clone();
+
+    b.at<float>({1,2}) = 99.f;
+
+    EXPECT_NE(
+        a.at<float>({1,2}),
+        b.at<float>({1,2}));
+}
+
+TEST(TensorTest, CloneTransposedTensor)
+{
+    Tensor a(
+        Shape({2,3}),
+        DType::float32());
+
+    Tensor t = a.transpose(0,1);
+
+    Tensor c = t.clone();
+
+    EXPECT_EQ(
+        t.shape(),
+        c.shape());
+
+    EXPECT_EQ(
+        t.strides(),
+        c.strides());
+
+    EXPECT_FALSE(
+        c.is_contiguous());
+}

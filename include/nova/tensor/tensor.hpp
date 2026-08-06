@@ -126,6 +126,9 @@ namespace nova {
 			// Inplace Operation
 			void reshape_(const Shape& new_shape);
 			
+			// Clone
+			Tensor clone() const;
+			
 			
 			/*------------------------
 				Indexing Operation

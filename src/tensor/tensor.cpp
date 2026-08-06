@@ -1,6 +1,7 @@
 #include "nova/tensor/tensor.hpp"
 
 #include <string>
+#include <cstring>
 
 #include "nova/allocators/allocator_registry.hpp"
 
@@ -222,5 +223,19 @@ namespace nova
 			device(),
 			dtype(),
 			layout());
+	}
+	
+	// Clone
+	Tensor Tensor::clone() const {
+		auto new_storage = allocate_storage(
+							shape(),
+							dtype(),
+							device());
+		
+		std::memcpy(new_storage->data(),
+			storage_->data(),
+			storage_->bytes());
+		
+		return Tensor(std::move(new_storage), metadata_);
 	}
 }
