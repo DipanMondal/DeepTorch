@@ -1,6 +1,7 @@
 #include "nova/tensor/strides.hpp"
 #include <string>
 #include <utility>
+#include <numeric>
 
 namespace nova {
 	Strides::Strides(std::initializer_list<value_type> strides) : strides_(strides) {}
@@ -79,10 +80,56 @@ namespace nova {
 		validate_dimension(dim0);
 		validate_dimension(dim1);
 		
-		auto dims = strides_;
-		std::swap(dims[dim0], dims[dim1]);
-		
-		return Strides(std::move(dims));
-	}
+		std::vector<std::size_t> order(rank());
 
+		std::iota(order.begin(), order.end(), 0);
+
+		std::swap(order[dim0], order[dim1]);
+
+		return permute(order);
+	}
+	
+	
+	Strides Strides::permute(std::span<const std::size_t> order) const {
+		if (order.size() != rank())
+		{
+			throw std::invalid_argument(
+				"Permutation size mismatch.");
+		}
+
+		std::vector<bool> visited(rank(), false);
+
+		for (std::size_t dim : order)
+		{
+			if (dim >= rank())
+			{
+				throw std::out_of_range(
+					"Permutation index out of range.");
+			}
+
+			if (visited[dim])
+			{
+				throw std::invalid_argument(
+					"Duplicate dimension.");
+			}
+
+			visited[dim] = true;
+		}
+
+		std::vector<std::size_t> strides(rank());
+
+		for (std::size_t i = 0; i < rank(); ++i)
+		{
+			strides[i] = strides_[order[i]];
+		}
+
+		return Strides(std::move(strides));
+	}
+	
+	Strides Strides::permute(std::initializer_list<std::size_t> order) const {
+		return permute(
+			std::span<const std::size_t>(
+				order.begin(),
+				order.size()));
+	}
 }

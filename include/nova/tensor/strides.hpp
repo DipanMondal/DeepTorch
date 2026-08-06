@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <vector>
+#include <span>
 
 #include "nova/tensor/shape.hpp"
 
@@ -63,5 +64,10 @@ namespace nova {
 			// view operations
 			[[nodiscard]]
 			Strides transpose(std::size_t dim0, std::size_t dim1) const;
+			
+			[[nodiscard]]
+			Strides permute(std::span<const std::size_t> order) const;
+			[[nodiscard]]
+			Strides permute(std::initializer_list<std::size_t> order) const;
 	};
 }

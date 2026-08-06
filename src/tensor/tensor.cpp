@@ -181,6 +181,18 @@ namespace nova
 				dim1));
 	}
 	
+	Tensor Tensor::permute(std::span<const std::size_t> order) const {
+		return Tensor(
+			storage_,
+			metadata_.permute(order));
+	}
+	
+	Tensor Tensor::permute(std::initializer_list<std::size_t> order) const {
+		return Tensor(
+			storage_,
+			metadata_.permute(order));
+	}
+	
 	
 	// Inplace Operation
 	void Tensor::reshape_(const Shape& new_shape) {
@@ -203,5 +215,4 @@ namespace nova
 			dtype(),
 			layout());
 	}
-
 }

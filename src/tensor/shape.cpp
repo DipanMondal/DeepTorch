@@ -146,10 +146,67 @@ namespace nova {
 		validate_dimension(dim0);
 		validate_dimension(dim1);
 		
-		auto dims = dims_;
-		std::swap(dims[dim0], dims[dim1]);
-		
+		std::vector<std::size_t> order(rank());
+
+		std::iota(order.begin(),order.end(),0);
+
+		std::swap(order[dim0], order[dim1]);
+
+		return permute(order);
+	}
+	
+	Shape Shape::permute(std::span<const std::size_t> order) const {
+		// Validate size
+		if (order.size() != rank())
+		{
+			throw std::invalid_argument(
+				"Permutation size (" +
+				std::to_string(order.size()) +
+				") must equal tensor rank (" +
+				std::to_string(rank()) +
+				").");
+		}
+
+		// Validate permutation
+		std::vector<bool> visited(rank(), false);
+
+		for (std::size_t dim : order)
+		{
+			if (dim >= rank())
+			{
+				throw std::out_of_range(
+					"Permutation index " +
+					std::to_string(dim) +
+					" is out of range.");
+			}
+
+			if (visited[dim])
+			{
+				throw std::invalid_argument(
+					"Duplicate dimension " +
+					std::to_string(dim) +
+					" in permutation.");
+			}
+
+			visited[dim] = true;
+		}
+
+		// Permute dimensions
+		std::vector<std::size_t> dims(rank());
+
+		for (std::size_t i = 0; i < rank(); ++i)
+		{
+			dims[i] = dims_[order[i]];
+		}
+
 		return Shape(std::move(dims));
+	}
+	
+	Shape Shape::permute(std::initializer_list<std::size_t> order) const {
+		return permute(
+			std::span<const std::size_t>(
+				order.begin(),
+				order.size()));
 	}
 }
 

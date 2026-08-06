@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include <cstddef>
 #include <limits>
+#include <span>
 
 namespace nova {
 	class Shape final{
@@ -63,5 +64,11 @@ namespace nova {
 			
 			[[nodiscard]]
 			Shape transpose(std::size_t dim0, std::size_t dim1) const;
+			
+			[[nodiscard]]
+			Shape permute(std::span<const std::size_t> order) const;
+			[[nodiscard]]
+			Shape permute(std::initializer_list<std::size_t> order) const;
+			
 	};
 }

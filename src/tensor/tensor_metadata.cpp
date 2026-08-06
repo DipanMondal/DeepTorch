@@ -95,4 +95,21 @@ namespace nova {
 			dtype_,
 			layout_);
 	}
+	
+	TensorMetadata TensorMetadata::permute(std::span<const std::size_t> order) const {
+		return TensorMetadata(
+			shape_.permute(order),
+			strides_.permute(order),
+			offset_,
+			device_,
+			dtype_,
+			layout_);
+	}
+	
+	TensorMetadata TensorMetadata::permute(std::initializer_list<std::size_t> order) const {
+		return permute(
+			std::span<const std::size_t>(
+				order.begin(),
+				order.size()));
+	}
 }

@@ -355,3 +355,39 @@ TEST(ShapeTest, TransposePreservesNumel)
         shape.numel(),
         transposed.numel());
 }
+
+TEST(ShapeTest, PermuteBasic)
+{
+    Shape shape({2,3,4});
+
+    Shape p = shape.permute({2,0,1});
+
+    EXPECT_EQ(p, Shape({4,2,3}));
+}
+
+TEST(ShapeTest, InvalidPermutationSize)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.permute({0,1}),
+        std::invalid_argument);
+}
+
+TEST(ShapeTest, DuplicateDimension)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.permute({0,0,2}),
+        std::invalid_argument);
+}
+
+TEST(ShapeTest, OutOfRangeDimension)
+{
+    Shape shape({2,3,4});
+
+    EXPECT_THROW(
+        shape.permute({0,3,1}),
+        std::out_of_range);
+}

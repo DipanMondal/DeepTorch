@@ -34,6 +34,7 @@ add_executable(
 	metadata/test_reshape.cpp
 	metadata/test_flatten.cpp
 	metadata/test_transpose.cpp
+	metadata/test_permute.cpp
 )
 
 target_link_libraries(

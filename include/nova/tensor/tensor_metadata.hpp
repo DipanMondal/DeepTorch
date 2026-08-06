@@ -65,5 +65,10 @@ namespace nova {
 			
 			[[nodiscard]]
 			TensorMetadata transpose(std::size_t dim0, std::size_t dim1) const;
+			
+			[[nodiscard]]
+			TensorMetadata permute(std::span<const std::size_t> order) const;
+			[[nodiscard]]
+			TensorMetadata permute(std::initializer_list<std::size_t> order) const;
 	};
 }
