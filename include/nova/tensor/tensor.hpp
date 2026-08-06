@@ -113,10 +113,15 @@ namespace nova {
 			[[nodiscard]]
 			Tensor transpose(std::size_t dim0, std::size_t dim1) const;
 			
+			// Permute
 			[[nodiscard]]
 			Tensor permute(std::span<const std::size_t> order) const;
 			[[nodiscard]]
 			Tensor permute(std::initializer_list<std::size_t> order) const;
+			
+			// View
+			[[nodiscard]]
+			Tensor view(const Shape& new_shape) const;
 			
 			// Inplace Operation
 			void reshape_(const Shape& new_shape);

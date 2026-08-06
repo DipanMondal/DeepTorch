@@ -181,6 +181,8 @@ namespace nova
 				dim1));
 	}
 	
+	
+	// Permute
 	Tensor Tensor::permute(std::span<const std::size_t> order) const {
 		return Tensor(
 			storage_,
@@ -191,6 +193,12 @@ namespace nova
 		return Tensor(
 			storage_,
 			metadata_.permute(order));
+	}
+	
+	
+	// View()
+	Tensor Tensor::view(const Shape& new_shape) const {
+		return reshape(new_shape);
 	}
 	
 	
